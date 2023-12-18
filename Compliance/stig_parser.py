@@ -3,12 +3,16 @@ from datetime import date
 
 TODAY = str(date.today().strftime("%Y-%m-%d"))
 STIG_DIRECTORY = "Checklists/"
+
+"""
 VALID_STATUS = { # human readable : stig readable
     "Not A Finding" : "NotAFinding",
     "Not Reviewed" : "Not_Reviewed",
     "Not Applicable" : "Not_Applicable",
     "Open" : "OPEN"
 }
+"""
+
 def open_checklist(filename):
     try:
         tree = ET.parse(STIG_DIRECTORY + filename)
