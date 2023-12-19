@@ -36,14 +36,7 @@ class Cisco_Router_NDM_IOS_XE:
             sp.set_ipv4_address(device_connection.get_interfaces_ip(), self.checklist["root"], self.checklist["tree"])
 
             # Run Compliance Checks
-            self.V215807()
-            self.V215808()
-            self.V215809()
-            self.V215810()
-            self.V215811()
-            self.V215812()
-            self.V215813()
-            self.V215814()
+           
 
         except Exception as e:
             print(f"An error occurred while running the compliance check: {e}")
@@ -55,13 +48,13 @@ class Cisco_Router_NDM_IOS_XE:
             # Close Connection
             device_connection.close()
 
-    def V215807(self):
+    def CISC_ND_000010(self):
         comments = []
         try:
             pass
         except Exception as e:
             print(f"An error occurred while running the compliance check: {e}")   
-    def V215808(self):
+    def CISC_ND_000090(self):
         try:
             required_config_items = ["archive", "log config", "logging enable"]
             non_compliant_config_items = []
@@ -81,7 +74,7 @@ class Cisco_Router_NDM_IOS_XE:
 
         except Exception as e:
                 print(f"An error occurred: {e}") 
-    def V215809(self):   
+    def CISC_ND_000100(self):   
         try:
             comments = []
             comments.append("This vulnerability is a duplicate of V-215808.")
@@ -89,7 +82,7 @@ class Cisco_Router_NDM_IOS_XE:
             sp.set_vulnerability_status("V-215809", status, comments, self.checklist["root"], self.checklist["tree"])
         except Exception as e:
             print(f"An error occurred while running the compliance check: {e}")
-    def V215810(self):
+    def CISC_ND_000110(self):
         try:
             comments = []
             comments.append("This vulnerability is a duplicate of V-215808.")
@@ -97,7 +90,7 @@ class Cisco_Router_NDM_IOS_XE:
             sp.set_vulnerability_status("V-215810", status, comments, self.checklist["root"], self.checklist["tree"])
         except Exception as e:
             print(f"An error occurred while running the compliance check: {e}")
-    def V215811(self):
+    def CISC_ND_000120(self):
         try:
             comments = []
             comments.append("This vulnerability is a duplicate of V-215808.")
@@ -105,7 +98,7 @@ class Cisco_Router_NDM_IOS_XE:
             sp.set_vulnerability_status("V-215811", status, comments, self.checklist["root"], self.checklist["tree"])
         except Exception as e:
             print(f"An error occurred while running the compliance check: {e}") 
-    def V215812(self):
+    def CISC_ND_000140(self):
         try:
             comments = []
             self.commands = [f"show run | s line vty 0 {globals.MAX_VTY_LINES}"]
@@ -120,7 +113,7 @@ class Cisco_Router_NDM_IOS_XE:
                 sp.set_vulnerability_status("V-215812", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
         except Exception as e:
             print(f"An error occurred while running the compliance check: {e}")
-    def V215813(self):
+    def CISC_ND_000150(self):
         try:
             comments = []
             if not "login block-for 900 attempts 3 within 120" in self.show_run:
@@ -128,7 +121,7 @@ class Cisco_Router_NDM_IOS_XE:
                 sp.set_vulnerability_status("V-215813", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
         except Exception as e:
             print(f"An error occurred while running the compliance check: {e}")
-    def V215814(self):
+    def CISC_ND_000160(self):
         try:
             comments = []
             self.commands = ["show banner login"]
@@ -142,7 +135,7 @@ class Cisco_Router_NDM_IOS_XE:
                 sp.set_vulnerability_status("V-215814", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
         except Exception as e:
             print(f"An error occurred while running the compliance check: {e}")
-    def V215815(self):
+    def CISC_ND_000210(self):
         try:
             comments = ["This vulnerability is a duplicate of V-215808."]
             # duplicate of 215808
@@ -150,7 +143,7 @@ class Cisco_Router_NDM_IOS_XE:
             sp.set_vulnerability_status("V-215815", status, comments, self.checklist["root"], self.checklist["tree"])
         except Exception as e:
             print(f"An error occurred while running the compliance check: {e}")
-    def V215816(self):
+    def CISC_ND_000280(self):
         comments = []
         if not "service timestamps log datetime" in self.show_run:
             comments.append(f"service timestamps log datetime is not configured.")
@@ -158,5 +151,146 @@ class Cisco_Router_NDM_IOS_XE:
         else:
             comments.append(f"service timestamps log datetime is configured.")
             sp.set_vulnerability_status("V-215816", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
-    def V215817(self):
+    def CISC_ND_000290(self):
+        try: 
+            comments =[]
+            firewall_policies = self.device_connection.get_firewall_policies()
+            for policy in firewall_policies:
+                if policy["action"] == "deny" and not policy["log"] == "all":
+                    comments.append(f"Firewall policy {policy['name']} does not log all denied packets.")
+                    sp.set_vulnerability_status("V-215817", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+
+            if sp.get_vulnerability_status() == sp.VALID_STATUS['NotAFinding']:
+                comments.append(f"All firewall policies log all denied packets.")
+                sp.set_vulnerability_status("V-215817", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000330(self):
+        try:
+            comments = ["This vulnerability is a duplicate of V-215808."]
+            status = sp.get_vulnerability_status("V-215808", self.checklist["root"], self.checklist["tree"])
+            sp.set_vulnerability_status("V-215818", status, comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000380(self):
         pass
+    def CISC_ND_000390(self):
+        try:
+            comments = []
+            if not "file privilege 15" in self.show_run:
+                comments.append(f"Privilege level 15 is not configured.")
+                sp.set_vulnerability_status("V-215819", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000460(self):
+        try:
+            #duplicate of 000390
+            comments = ["This vulnerability is a duplicate of V-215819."]
+            status = sp.get_vulnerability_status("V-215819", self.checklist["root"], self.checklist["tree"])
+            sp.set_vulnerability_status("V-215820", status, comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000470(self):
+        try:
+            comments = []
+            commands = ["boot network", "ip boot server", "ip bootp server", "ip dns server", "ip identd", "ip finger", "ip http server", "ip rcmd rcp-enable", "ip rcmd rsh-enable", "service config", "service finger", "service tcp-small-servers", "service udp-small-servers", "service pad", "service call-home"]
+            for command in commands:
+                if command in self.show_run:
+                    comments.append(f"{command} is configured.")
+                    sp.set_vulnerability_status("V-215821", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+            
+            if not sp.get_vulnerability_status() == sp.VALID_STATUS["OPEN"]:
+                comments.append(f"All services are disabled.")
+                sp.set_vulnerability_status("V-215821", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000490(self):
+        try: 
+            comments = []
+            users = self.device_connection.get_users()
+            if users.count() > 1:
+                comments.append(f"More than one user is configured.")
+                sp.set_vulnerability_status("V-215822", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+            else:
+                comments.append(f"Only one user is configured.")
+                sp.set_vulnerability_status("V-215822", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000550(self):
+        try:
+            comments =[]
+            commands = ["show run | section aaa common-criteria policy"]
+            self.response = self.device_connection.cli(commands)
+            if not "min-length 15" in self.response:
+                comments.append(f"Minimum password length is not configured.")
+                sp.set_vulnerability_status("V-215823", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+            else:
+                comments.append(f"Minimum password length is configured.")
+                sp.set_vulnerability_status("V-215823", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000570(self):
+        try:
+            comments =[]
+            commands = ["show run | section aaa common-criteria policy"]
+            self.response = self.device_connection.cli(commands)
+            if not "upper-case 1" in self.response:
+                comments.append(f"Minimum upper case characters is not configured.")
+                sp.set_vulnerability_status("V-215824", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+            else:
+                comments.append(f"Minimum upper case characters is configured.")
+                sp.set_vulnerability_status("V-215824", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000580(self):
+        try:
+            comments =[]
+            commands = ["show run | section aaa common-criteria policy"]
+            self.response = self.device_connection.cli(commands)
+            if not "lower-case 1" in self.response:
+                comments.append(f"Minimum lower case characters is not configured.")
+                sp.set_vulnerability_status("V-215825", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+            else:
+                comments.append(f"Minimum lower case characters is configured.")
+                sp.set_vulnerability_status("V-215825", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000590(self):
+        try:
+            comments =[]
+            commands = ["show run | section aaa common-criteria policy"]
+            self.response = self.device_connection.cli(commands)
+            if not "numeric-count 1" in self.response:
+                comments.append(f"Minimum numeric characters is not configured.")
+                sp.set_vulnerability_status("V-215826", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+            else:
+                comments.append(f"Minimum numeric characters is configured.")
+                sp.set_vulnerability_status("V-215826", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000600(self):
+        try:
+            comments =[]
+            commands = ["show run | section aaa common-criteria policy"]
+            self.response = self.device_connection.cli(commands)
+            if not "special-case 1" in self.response:
+                comments.append(f"Minimum special characters is not configured.")
+                sp.set_vulnerability_status("V-215827", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+            else:
+                comments.append(f"Minimum special characters is configured.")
+                sp.set_vulnerability_status("V-215827", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred while running the compliance check: {e}")
+    def CISC_ND_000610(self):
+        try:
+            comments =[]
+            commands = ["show run | section aaa common-criteria policy"]
+            self.response = self.device_connection.cli(commands)
+            if not "char-changes 8" in self.response:
+                comments.append(f"Minimum character changes is not configured.")
+                sp.set_vulnerability_status("V-215828", sp.VALID_STATUS['OPEN'], comments, self.checklist["root"], self.checklist["tree"])
+            else:
+                comments.append(f"Minimum character changes is configured.")
+                sp.set_vulnerability_status("V-215828", sp.VALID_STATUS['NF'], comments, self.checklist["root"], self.checklist["tree"])
+        except Exception as e:
+            print(f"An error occurred: {e}")
