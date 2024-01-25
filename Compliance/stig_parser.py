@@ -1,9 +1,6 @@
 import xml.etree.ElementTree as ET
 from datetime import date
 
-TODAY = str(date.today().strftime("%Y-%m-%d"))
-STIG_DIRECTORY = "Checklists/"
-
 """
 VALID_STATUS = { # human readable : stig readable
     "Not A Finding" : "NotAFinding",
@@ -14,6 +11,8 @@ VALID_STATUS = { # human readable : stig readable
 """
 
 def open_checklist(filename):
+    TODAY = str(date.today().strftime("%Y-%m-%d"))
+    STIG_DIRECTORY = "Checklists/"
     try:
         tree = ET.parse(STIG_DIRECTORY + filename)
         root = tree.getroot()
@@ -48,7 +47,7 @@ def set_ipv4_address(ipv4_address, root, tree):
     except Exception as e:
         print(f"An error occurred while setting the IPv4 address: {e}")
 
-def set_vulnerability_status(vuln_id, status, comments, root, tree): # TODO: Make sure to properly handle opens
+def set_vulnerability_status(vuln_id, status, comments, root, tree):
     try:
         for child in root.findall(".//VULN"):
             if child.find(".//VULN_ATTRIBUTE").text == "Vuln_Num":
